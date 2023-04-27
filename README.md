@@ -23,7 +23,7 @@ $password = '...';
 $client = new UrlShortenerClient($baseUri, $username, $password);
 ```
 
-### Get short URL
+### Generate short URL
 
 ```php
 use Datana\UrlShortener\Api\UrlShortenerApi;
