@@ -16,7 +16,7 @@ composer require datana-gmbh/url-shortener-api
 ```php
 use Datana\UrlShortener\Api\UrlShortenerClient;
 
-$baseUri = 'https://url-shortner.datana.rocks';
+$baseUri = 'https://url-shortner.datana.app';
 $username = '...';
 $password = '...';
 
