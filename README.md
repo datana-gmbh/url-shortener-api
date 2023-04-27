@@ -1,4 +1,4 @@
-# datapool-api
+# url-shortener-api
 
 | Branch    | PHP                                         | Code Coverage                                        |
 |-----------|---------------------------------------------|------------------------------------------------------|
@@ -9,89 +9,86 @@
 ### Installation
 
 ```bash
-composer require datana-gmbh/datapool-api
+composer require datana-gmbh/url-shortener-api
 ```
 
 ### Setup
 ```php
-use Datana\Datapool\Api\DatapoolClient;
+use Datana\UrlShortener\Api\UrlShortenerClient;
 
-$baseUri = 'https://api.datapool...';
+$baseUri = 'https://url-shortner.datana.rocks';
 $username = '...';
 $password = '...';
 
-$client = new DatapoolClient($baseUri, $username, $password);
-
-// you can now request any endpoint which needs authentication
-$client->request('GET', '/api/something', $options);
+$client = new UrlShortenerClient($baseUri, $username, $password);
 ```
 
 ## Akten
 
-In your code you should type-hint to `Datana\Datapool\Api\AktenApiInterface`
+In your code you should type-hint to `Datana\UrlShortener\Api\AktenApiInterface`
 
 ### Search by string (`string`)
 
 ```php
-use Datana\Datapool\Api\AktenApi;
-use Datana\Datapool\Api\DatapoolClient;
+use Datana\UrlShortener\Api\UrlShortenerApi;
+use Datana\UrlShortener\Api\UrlShortenerClient;
 
-$client = new DatapoolClient(/* ... */);
+$client = new UrlShortenerClient(/* ... */);
 
-$aktenApi = new AktenApi($client);
+$aktenApi = new UrlShortenerApi($client);
 $response = $aktenApi->search('MySearchTerm');
 ```
 
 ### Get by Aktenzeichen (`string`)
 
 ```php
-use Datana\Datapool\Api\AktenApi;
-use Datana\Datapool\Api\DatapoolClient;
-use Datana\Datapool\Api\Domain\Value\DatapoolId;
+use Datana\UrlShortener\Api\UrlShortenerApi;
+use Datana\UrlShortener\Api\UrlShortenerClient;
+use Datana\UrlShortener\Api\Domain\Value\UrlShortenerId;
 
-$client = new DatapoolClient(/* ... */);
+$client = new UrlShortenerClient(/* ... */);
 
-$aktenApi = new AktenApi($client);
+$aktenApi = new UrlShortenerApi($client);
 $response = $aktenApi->getByAktenzeichen('1abcde-1234-5678-Mustermann');
 
 /*
- * to get the DatapoolId transform the response to array
+ * to get the UrlShortenerId transform the response to array
  * and use the 'id' key.
  */
 $akten = $response->toArray();
-$datapoolId = DatapoolId::fromInt($akte['id']);
+$datapoolId = UrlShortenerId::fromInt($akte['id']);
 ```
 
 ### Get by Fahrzeug-Identifikationsnummer (`string`)
 
 ```php
-use Datana\Datapool\Api\AktenApi;
-use Datana\Datapool\Api\DatapoolClient;
-use Datana\Datapool\Api\Domain\Value\DatapoolId;
+use Datana\UrlShortener\Api\UrlShortenerApi;
+use Datana\UrlShortener\Api\UrlShortenerClient;
+use Datana\UrlShortener\Api\Domain\Value\UrlShortenerId;
 
-$client = new DatapoolClient(/* ... */);
+$client = new UrlShortenerClient(/* ... */);
 
-$aktenApi = new AktenApi($client);
+$aktenApi = new UrlShortenerApi($client);
 $response = $aktenApi->getByFahrzeugIdentifikationsnummer('ABC1234ABCD123456');
 
 /*
- * to get the DatapoolId transform the response to array
+ * to get the UrlShortenerId transform the response to array
  * and use the 'id' key.
  */
 $akten = $response->toArray();
-$datapoolId = DatapoolId::fromInt($akte['id']);
+$datapoolId = UrlShortenerId::fromInt($akte['id']);
 ```
 
 ### Get one by Aktenzeichen (`string`) or get an exception
 
 ```php
-use Datana\Datapool\Api\AktenApi;
-use Datana\Datapool\Api\DatapoolClient;
-use Datana\Datapool\Api\Domain\Value\DatapoolId;
+use Datana\UrlShortener\Api\UrlShortenerApi;
+use Datana\UrlShortener\Api\UrlShortenerClient;
+use Datana\UrlShortener\Api\Domain\Value\UrlShortenerId;
 
-$client = new DatapoolClient(/* ... */);
+$client = new UrlShortenerClient(/* ... */);
 
-$aktenApi = new AktenApi($client);
+$aktenApi = new UrlShortenerApi($client);
 
 // is an instance of AktenResponse
 $result = $aktenApi->getOneByAktenzeichen('1abcde-1234-5678-Mustermann');
@@ -103,39 +100,39 @@ $result = $aktenApi->getOneByAktenzeichen('1abcde-1234-5678-Mustermann');
  *   ]
  *
  * or use the dedicated getter methods like
- *  - getId(): DatapoolId
+ *  - getId(): UrlShortenerId
  * etc.
  */
 ```
 
-### Get by ID (`Datana\Datapool\Api\Domain\Value\DatapoolId`)
+### Get by ID (`Datana\UrlShortener\Api\Domain\Value\UrlShortenerId`)
 
 ```php
-use Datana\Datapool\Api\AktenApi;
-use Datana\Datapool\Api\DatapoolClient;
-use Datana\Datapool\Api\Domain\Value\DatapoolId;
+use Datana\UrlShortener\Api\UrlShortenerApi;
+use Datana\UrlShortener\Api\UrlShortenerClient;
+use Datana\UrlShortener\Api\Domain\Value\UrlShortenerId;
 
-$client = new DatapoolClient(/* ... */);
+$client = new UrlShortenerClient(/* ... */);
 
-$aktenApi = new AktenApi($client);
+$aktenApi = new UrlShortenerApi($client);
 
-$id = DatapoolId::fromInt(123);
+$id = UrlShortenerId::fromInt(123);
 
 $aktenApi->getById($id);
 ```
 
-### Get KT Akten Info (`Datana\Datapool\Api\Domain\Value\DatapoolId`)
+### Get KT Akten Info (`Datana\UrlShortener\Api\Domain\Value\UrlShortenerId`)
 
 ```php
-use Datana\Datapool\Api\AktenApi;
-use Datana\Datapool\Api\DatapoolClient;
-use Datana\Datapool\Api\Domain\Value\DatapoolId;
+use Datana\UrlShortener\Api\UrlShortenerApi;
+use Datana\UrlShortener\Api\UrlShortenerClient;
+use Datana\UrlShortener\Api\Domain\Value\UrlShortenerId;
 
-$client = new DatapoolClient(/* ... */);
+$client = new UrlShortenerClient(/* ... */);
 
-$aktenApi = new AktenApi($client);
+$aktenApi = new UrlShortenerApi($client);
 
-$id = DatapoolId::fromInt(123);
+$id = UrlShortenerId::fromInt(123);
 
 // is an instance of KtAktenInfoResponse
 $result = $aktenApi->getKtAktenInfo($id);
@@ -157,20 +154,20 @@ $result = $aktenApi->getKtAktenInfo($id);
  */
 ```
 
-### Get E-Termin Info (`Datana\Datapool\Api\Domain\Value\DatapoolId`)
+### Get E-Termin Info (`Datana\UrlShortener\Api\Domain\Value\UrlShortenerId`)
 
 ```php
-use Datana\Datapool\Api\AktenApi;
-use Datana\Datapool\Api\DatapoolClient;
-use Datana\Datapool\Api\Domain\Value\DatapoolId;
+use Datana\UrlShortener\Api\UrlShortenerApi;
+use Datana\UrlShortener\Api\UrlShortenerClient;
+use Datana\UrlShortener\Api\Domain\Value\UrlShortenerId;
 
-$client = new DatapoolClient(/* ... */);
+$client = new UrlShortenerClient(/* ... */);
 
-$aktenApi = new AktenApi($client);
+$aktenApi = new UrlShortenerApi($client);
 
-$id = DatapoolId::fromInt(123);
+$id = UrlShortenerId::fromInt(123);
 
-/* @var $response Datana\Datapool\Api\Domain\Response\EterminInfoResponse */
+/* @var $response Datana\UrlShortener\Api\Domain\Response\EterminInfoResponse */
 $response = $aktenApi->getETerminInfo($id);
 /*
  * $response->toArray():
@@ -186,20 +183,20 @@ $response = $aktenApi->getETerminInfo($id);
  */
 ```
 
-### Get SimplyBook Info (`Datana\Datapool\Api\Domain\Value\DatapoolId`)
+### Get SimplyBook Info (`Datana\UrlShortener\Api\Domain\Value\UrlShortenerId`)
 
 ```php
-use Datana\Datapool\Api\AktenApi;
-use Datana\Datapool\Api\DatapoolClient;
-use Datana\Datapool\Api\Domain\Value\DatapoolId;
+use Datana\UrlShortener\Api\UrlShortenerApi;
+use Datana\UrlShortener\Api\UrlShortenerClient;
+use Datana\UrlShortener\Api\Domain\Value\UrlShortenerId;
 
-$client = new DatapoolClient(/* ... */);
+$client = new UrlShortenerClient(/* ... */);
 
-$aktenApi = new AktenApi($client);
+$aktenApi = new UrlShortenerApi($client);
 
-$id = DatapoolId::fromInt(123);
+$id = UrlShortenerId::fromInt(123);
 
-/* @var $response Datana\Datapool\Api\Domain\Response\SimplyBookInfoResponse */
+/* @var $response Datana\UrlShortener\Api\Domain\Response\SimplyBookInfoResponse */
 $response = $aktenApi->getETerminInfo($id);
 /*
  * $response->toArray():
@@ -218,30 +215,30 @@ $response = $aktenApi->getETerminInfo($id);
 ### Set value "Nutzer Mandantencockpit" (`bool`)
 
 ```php
-use Datana\Datapool\Api\AktenApi;
-use Datana\Datapool\Api\DatapoolClient;
-use Datana\Datapool\Api\Domain\Value\DatapoolId;
+use Datana\UrlShortener\Api\UrlShortenerApi;
+use Datana\UrlShortener\Api\UrlShortenerClient;
+use Datana\UrlShortener\Api\Domain\Value\UrlShortenerId;
 
-$client = new DatapoolClient(/* ... */);
+$client = new UrlShortenerClient(/* ... */);
 
-$aktenApi = new AktenApi($client);
+$aktenApi = new UrlShortenerApi($client);
 
-$id = DatapoolId::fromInt(123);
+$id = UrlShortenerId::fromInt(123);
 
 $aktenApi->setValueNutzerMandantencockpit($id, true); // or false
 ```
 
 ## Aktenzeichen
 
-In your code you should type-hint to `Datana\Datapool\Api\AktenzeichenApiInterface`
+In your code you should type-hint to `Datana\UrlShortener\Api\AktenzeichenApiInterface`
 
 ### Get a new one
 
 ```php
-use Datana\Datapool\Api\AktenzeichenApi;
-use Datana\Datapool\Api\DatapoolClient;
+use Datana\UrlShortener\Api\AktenzeichenApi;
+use Datana\UrlShortener\Api\UrlShortenerClient;
 
-$client = new DatapoolClient(/* ... */);
+$client = new UrlShortenerClient(/* ... */);
 
 $aktenzeichenApi = new AktenzeichenApi($client);
 $aktenzeichenApi->new(); // returns sth like "6GU5DCB"
@@ -249,15 +246,15 @@ $aktenzeichenApi->new(); // returns sth like "6GU5DCB"
 
 ## AktenEventLog
 
-In your code you should type-hint to `Datana\Datapool\Api\AktenEventLogApiInterface`
+In your code you should type-hint to `Datana\UrlShortener\Api\AktenEventLogApiInterface`
 
 ### Create a new log
 
 ```php
-use Datana\Datapool\Api\AktenEventLogApi;
-use Datana\Datapool\Api\DatapoolClient;
+use Datana\UrlShortener\Api\AktenEventLogApi;
+use Datana\UrlShortener\Api\UrlShortenerClient;
 
-$client = new DatapoolClient(/* ... */);
+$client = new UrlShortenerClient(/* ... */);
 
 $aktenEventLog = new AktenEventLogApi($client);
 $aktenEventLog->log(
@@ -271,15 +268,15 @@ $aktenEventLog->log(
 
 ## SystemEventLog
 
-In your code you should type-hint to `Datana\Datapool\Api\SystemEventLogApiInterface`
+In your code you should type-hint to `Datana\UrlShortener\Api\SystemEventLogApiInterface`
 
 ### Create a new log
 
 ```php
-use Datana\Datapool\Api\DatapoolClient;
-use Datana\Datapool\Api\SystemEventLogApi;
+use Datana\UrlShortener\Api\UrlShortenerClient;
+use Datana\UrlShortener\Api\SystemEventLogApi;
 
-$client = new DatapoolClient(/* ... */);
+$client = new UrlShortenerClient(/* ... */);
 
 $systemEventLog = new SystemEventLogApi($client);
 $systemEventLog->log(
@@ -292,19 +289,19 @@ $systemEventLog->log(
 );
 ```
 
-The API internally converts the "+2 months" to a datetime object. If this datetime is reached, Datapool will delete the log entry. Pass ``null`` to keep the log entry forever.
+The API internally converts the "+2 months" to a datetime object. If this datetime is reached, UrlShortener will delete the log entry. Pass ``null`` to keep the log entry forever.
 
 ## ChatProtocol
 
-In your code you should type-hint to `Datana\Datapool\Api\ChatProtocolApiInterface`
+In your code you should type-hint to `Datana\UrlShortener\Api\ChatProtocolApiInterface`
 
 ### Save a new chat protocol
 
 ```php
-use Datana\Datapool\Api\ChatProtoclApi;
-use Datana\Datapool\Api\DatapoolClient;
+use Datana\UrlShortener\Api\ChatProtoclApi;
+use Datana\UrlShortener\Api\UrlShortenerClient;
 
-$client = new DatapoolClient(/* ... */);
+$client = new UrlShortenerClient(/* ... */);
 
 $chatProtocol = new ChrtProtocolApi($client);
 $chatProtocol->log(
@@ -315,8 +312,8 @@ $chatProtocol->log(
 );
 ```
 
-[build-status-master-php]: https://github.com/datana-gmbh/datapool-api/workflows/PHP/badge.svg?branch=master
-[coverage-status-master]: https://codecov.io/gh/datana-gmbh/datapool-api/branch/master/graph/badge.svg
+[build-status-master-php]: https://github.com/datana-gmbh/url-shortener-api/workflows/PHP/badge.svg?branch=master
+[coverage-status-master]: https://codecov.io/gh/datana-gmbh/url-shortener-api/branch/master/graph/badge.svg
 
-[actions]: https://github.com/datana-gmbh/datapool-api/actions
-[codecov]: https://codecov.io/gh/datana-gmbh/datapool-api
+[actions]: https://github.com/datana-gmbh/url-shortener-api/actions
+[codecov]: https://codecov.io/gh/datana-gmbh/url-shortener-api

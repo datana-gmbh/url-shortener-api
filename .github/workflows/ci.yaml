@@ -103,7 +103,4 @@ jobs:
               uses: "ramsey/composer-install@2.2.0"
 
             - name: "Run unit tests"
-              run: "vendor/bin/phpunit --configuration=phpunit.xml.dist --coverage-clover=.build/logs/clover.xml"
-
-            - name: "Send code coverage report to Codecov.io"
-              run: "bash <(curl -s https://codecov.io/bash)"
+              run: "vendor/bin/phpunit --configuration=phpunit.xml.dist"
