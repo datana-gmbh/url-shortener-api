@@ -20,7 +20,7 @@ final class FakeUrlShortenerApi implements UrlShortenerApiInterface
     public function generateShortUrl(string $targetUrl): UrlShortenerResponse
     {
         return new UrlShortenerResponse([
-            'short_url' => 'https://short.de/'.md5($targetUrl),
+            'short_url' => 'https://example.de/'.md5($targetUrl),
         ]);
     }
 }
