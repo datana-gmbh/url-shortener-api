@@ -26,24 +26,30 @@ final class FakeUrlShortenerTest extends TestCase
 
     /**
      * @test
+     *
+     * @dataProvider validProvider
      */
-    public function validUsingDefaultDomain(): void
+    public function valid(string $expected, string $targetUrl, ?string $domain): void
     {
         self::assertSame(
-            'https://example.de/99999ebcfdb78df077ad2727fd00969f',
-            (new FakeUrlShortenerApi())->generateShortUrl('https://google.com')->getShortUrl(),
+            $expected,
+            (new FakeUrlShortenerApi())->generateShortUrl($targetUrl, $domain)->getShortUrl(),
         );
     }
 
-    /**
-     * @test
-     */
-    public function validUsingCustomDomain(): void
+    public static function validProvider(): \Generator
     {
-        self::assertSame(
+        yield 'default domain' => [
+            'https://example.de/99999ebcfdb78df077ad2727fd00969f',
+            'https://google.com',
+            null,
+        ];
+
+        yield 'custom domain' => [
             'https://foo.de/99999ebcfdb78df077ad2727fd00969f',
-            (new FakeUrlShortenerApi())->generateShortUrl('https://google.com', 'foo.de')->getShortUrl(),
-        );
+            'https://google.com',
+            'foo.de',
+        ];
     }
 
     /**
