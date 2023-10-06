@@ -26,12 +26,40 @@ final class FakeUrlShortenerTest extends TestCase
 
     /**
      * @test
+     *
+     * @dataProvider validProvider
      */
-    public function valid(): void
+    public function valid(string $expected, string $targetUrl, ?string $domain): void
     {
         self::assertSame(
-            'https://example.de/99999ebcfdb78df077ad2727fd00969f',
-            (new FakeUrlShortenerApi())->generateShortUrl('https://google.com')->getShortUrl(),
+            $expected,
+            (new FakeUrlShortenerApi())->generateShortUrl($targetUrl, $domain)->getShortUrl(),
         );
+    }
+
+    public static function validProvider(): \Generator
+    {
+        yield 'default domain' => [
+            'https://example.de/99999ebcfdb78df077ad2727fd00969f',
+            'https://google.com',
+            null,
+        ];
+
+        yield 'custom domain' => [
+            'https://foo.de/99999ebcfdb78df077ad2727fd00969f',
+            'https://google.com',
+            'foo.de',
+        ];
+    }
+
+    /**
+     * @test
+     */
+    public function throwsInvalidArgumentExceptionOnInvalidDomain(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('$domain must be a non-empty string.');
+
+        (new FakeUrlShortenerApi())->generateShortUrl('https://google.com', '')->getShortUrl();
     }
 }

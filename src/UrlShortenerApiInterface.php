@@ -20,5 +20,5 @@ use Datana\UrlShortener\Api\Response\UrlShortenerResponse;
  */
 interface UrlShortenerApiInterface
 {
-    public function generateShortUrl(string $targetUrl): UrlShortenerResponse;
+    public function generateShortUrl(string $targetUrl, ?string $domain = null): UrlShortenerResponse;
 }
