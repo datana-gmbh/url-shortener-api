@@ -29,18 +29,23 @@ final class UrlShortenerApi implements UrlShortenerApiInterface
         $this->logger = $logger ?? new NullLogger();
     }
 
-    public function generateShortUrl(string $targetUrl): UrlShortenerResponse
+    public function generateShortUrl(string $targetUrl, ?string $domain = null): UrlShortenerResponse
     {
         $targetUrl = TrimmedNonEmptyString::fromString($targetUrl, '$target must be a non empty string.');
+
+        if ($domain !== null) {
+            $domain = TrimmedNonEmptyString::fromString($domain, '$domain must be a non-empty string.');
+        }
 
         try {
             $response = $this->client->request(
                 'POST',
                 '/api/generate-short-url',
                 [
-                    'body' => [
+                    'body' => array_filter([
                         'target' => $targetUrl->toString(),
-                    ],
+                        'domain' => $domain,
+                    ]),
                 ],
             );
 
