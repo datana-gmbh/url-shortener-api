@@ -76,7 +76,7 @@ jobs:
               uses: "ramsey/composer-install@2.2.0"
 
             - name: "Static code analysis"
-              run: "composer phpstan"
+              run: "vendor/bin/phpstan analyse --configuration phpstan.neon.dist --no-progress"
 
     tests:
         name: "Tests"
