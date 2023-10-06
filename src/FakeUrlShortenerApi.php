@@ -20,17 +20,17 @@ final class FakeUrlShortenerApi implements UrlShortenerApiInterface
 {
     public function generateShortUrl(string $targetUrl, ?string $domain = null): UrlShortenerResponse
     {
-        if ($domain === null) {
+        if (null === $domain) {
             $domain = 'example.de';
         }
 
         TrimmedNonEmptyString::fromString(
             $domain,
-            '$domain must be a non-empty string.'
+            '$domain must be a non-empty string.',
         );
 
         return new UrlShortenerResponse([
-            'short_url' => sprintf('https://%s/%s',$domain , md5($targetUrl)),
+            'short_url' => sprintf('https://%s/%s', $domain, md5($targetUrl)),
         ]);
     }
 }

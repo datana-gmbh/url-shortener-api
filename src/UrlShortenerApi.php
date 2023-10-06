@@ -17,6 +17,7 @@ use Datana\UrlShortener\Api\Response\UrlShortenerResponse;
 use OskarStark\Value\TrimmedNonEmptyString;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
+use Webmozart\Assert\Assert;
 
 final class UrlShortenerApi implements UrlShortenerApiInterface
 {
@@ -33,8 +34,11 @@ final class UrlShortenerApi implements UrlShortenerApiInterface
     {
         $targetUrl = TrimmedNonEmptyString::fromString($targetUrl, '$target must be a non empty string.');
 
-        if ($domain !== null) {
-            $domain = TrimmedNonEmptyString::fromString($domain, '$domain must be a non-empty string.');
+        if (null !== $domain) {
+            $domain = TrimmedNonEmptyString::fromString($domain, '$domain must be a non-empty string.')->toString();
+
+            Assert::notStartsWith($domain, 'https://');
+            Assert::notStartsWith($domain, 'http://');
         }
 
         try {
